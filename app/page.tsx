@@ -1,4 +1,4 @@
-import { ArrowUpRight, PlaneTakeoff } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { BrandMark } from "@/components/brand-mark";
 import { ServiceSpotlight } from "@/components/service-spotlight";
 import { ABOUT_COPY, CONTACT_ITEMS, FACTS, HERO_COPY, HERO_TITLE, HIGHLIGHTS, OPERATOR_NOTE, SERVICES } from "@/lib/company-profile";
@@ -122,21 +122,6 @@ export default function HomePage() {
                 <strong>{fact.value}</strong>
               </article>
             ))}
-          </div>
-        </section>
-
-        <section className="section cta-panel">
-          <div>
-            <p className="eyebrow">Architecture Intent</p>
-            <h2>Repo ini sengaja dipisah untuk company profile saja.</h2>
-            <p className="section-copy">
-              Basisnya sekarang Next.js App Router supaya cocok untuk belajar React component, layout, data mapping, dan client
-              interaction sederhana.
-            </p>
-          </div>
-          <div className="cta-badge">
-            <PlaneTakeoff size={18} />
-            <span>Next.js company-only site</span>
           </div>
         </section>
 
