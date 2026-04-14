@@ -9,7 +9,6 @@
   --paper: #f4f8ff;
   --paper-border: #d8e3f6;
   --accent: #4f7df4;
-  --accent-2: #7db4ff;
   --accent-soft: rgba(79, 125, 244, 0.14);
   --tile-fill: #2563eb;
   --tile-stroke: #1e3a8a;
@@ -28,7 +27,7 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Avenir Next", "Segoe UI", Helvetica, sans-serif;
   color: var(--text);
   background:
     radial-gradient(circle at top right, rgba(125, 180, 255, 0.28), transparent 28%),
@@ -53,6 +52,13 @@ a {
   text-decoration: none;
 }
 
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
 .page-shell {
   position: relative;
   z-index: 1;
@@ -64,10 +70,10 @@ a {
 .topbar,
 .panel,
 .hero,
-.service-card,
-.fact-card,
+.service-detail,
 .contact-card,
-.footer {
+.footer,
+.service-tab {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
@@ -106,8 +112,7 @@ a {
 .brand-eyebrow,
 .eyebrow,
 .card-label,
-.fact-card span,
-.contact-card .card-label {
+.fact-card span {
   font-size: 0.72rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -115,7 +120,7 @@ a {
 }
 
 .brand-name {
-  font-family: "Newsreader", serif;
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
   font-size: 2rem;
   line-height: 0.95;
   font-weight: 700;
@@ -151,40 +156,60 @@ a {
 }
 
 .hero {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.85fr);
+  grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.85fr);
   gap: 24px;
+  overflow: hidden;
   margin-top: 20px;
   padding: 36px;
   border: 1px solid var(--surface-border);
   border-radius: 34px;
-  background:
-    linear-gradient(135deg, rgba(6, 12, 24, 0.9), rgba(28, 55, 110, 0.82), rgba(79, 125, 244, 0.35)),
-    url("https://images.unsplash.com/photo-1517479149777-5f3b1511d5ad?auto=format&fit=crop&w=1800&q=80")
-      center/cover;
   box-shadow: var(--shadow);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(6, 12, 24, 0.9), rgba(28, 55, 110, 0.82), rgba(79, 125, 244, 0.35));
+}
+
+.hero-media {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.34;
+}
+
+.hero-copy,
+.hero-panel {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-copy h1,
 .panel h2,
-.section-heading h2 {
+.section-heading h2,
+.cta-panel h2 {
   margin: 12px 0 0;
-  font-family: "Newsreader", serif;
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
   line-height: 0.96;
   letter-spacing: -0.05em;
 }
 
 .hero-copy h1 {
   max-width: 780px;
-  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-size: clamp(3rem, 6vw, 5.4rem);
 }
 
 .hero-text,
 .section-copy,
-.service-card p,
-.contact-card strong,
-.hero-card p,
-.mini-grid strong {
+.service-summary,
+.service-detail-copy,
+.highlight-card p,
+.contact-card strong {
   line-height: 1.8;
 }
 
@@ -230,8 +255,9 @@ a {
 }
 
 .hero-card,
-.service-card,
-.contact-card {
+.service-detail,
+.contact-card,
+.service-tab {
   border: 1px solid var(--surface-border);
   background: var(--surface);
   border-radius: 26px;
@@ -243,9 +269,14 @@ a {
 
 .hero-card h2 {
   margin: 10px 0 0;
-  font-family: "Newsreader", serif;
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
   font-size: 2rem;
   letter-spacing: -0.05em;
+}
+
+.hero-card p:last-child {
+  margin: 10px 0 0;
+  color: var(--text-soft);
 }
 
 .hero-card-accent {
@@ -262,7 +293,8 @@ a {
   gap: 20px;
 }
 
-.panel {
+.panel,
+.cta-panel {
   padding: 28px;
   border-radius: 30px;
   background: var(--paper);
@@ -280,7 +312,7 @@ a {
 }
 
 .eyebrow {
-  color: #4f7df4;
+  color: var(--accent);
 }
 
 .eyebrow-light {
@@ -288,7 +320,8 @@ a {
 }
 
 .panel h2,
-.section-heading h2 {
+.section-heading h2,
+.cta-panel h2 {
   font-size: clamp(2rem, 3vw, 3rem);
 }
 
@@ -302,20 +335,19 @@ a {
   color: var(--text-soft);
 }
 
-.feature-grid,
-.service-grid,
+.highlight-grid,
 .facts-grid,
 .contact-grid {
   display: grid;
   gap: 16px;
 }
 
-.feature-grid {
+.highlight-grid {
   margin-top: 24px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.feature-card,
+.highlight-card,
 .fact-card {
   border-radius: 24px;
   background: #edf4ff;
@@ -323,15 +355,25 @@ a {
   padding: 20px;
 }
 
-.feature-card h3,
-.service-card h3 {
-  margin: 10px 0 0;
-  font-size: 1.4rem;
-  line-height: 1.05;
+.highlight-icon,
+.contact-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
-.feature-card p:last-child {
-  margin: 12px 0 0;
+.highlight-card h3 {
+  margin: 14px 0 0;
+  font-size: 1.25rem;
+}
+
+.highlight-card p {
+  margin: 10px 0 0;
   color: #51637f;
 }
 
@@ -353,22 +395,79 @@ a {
   margin-bottom: 16px;
 }
 
-.service-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+.service-spotlight {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.15fr);
+  gap: 18px;
 }
 
-.service-card {
-  padding: 22px;
+.service-tabs {
+  display: grid;
+  gap: 12px;
 }
 
-.service-card h3 {
-  font-family: "Newsreader", serif;
-  font-size: 1.7rem;
+.service-tab {
+  width: 100%;
+  padding: 18px 20px;
+  text-align: left;
+  color: var(--text);
+  cursor: pointer;
 }
 
-.service-card p:last-child {
+.service-tab span {
+  display: block;
+  color: rgba(233, 238, 249, 0.62);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.service-tab strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 1.15rem;
+}
+
+.service-tab-active {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateX(4px);
+}
+
+.service-detail {
+  padding: 28px;
+}
+
+.service-detail h3 {
   margin: 14px 0 0;
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  font-size: 2.4rem;
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+}
+
+.service-summary {
+  margin: 16px 0 0;
+  font-size: 1.02rem;
+  color: var(--text);
+}
+
+.service-detail-copy {
+  margin: 18px 0 0;
   color: var(--text-soft);
+}
+
+.service-detail-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(233, 238, 249, 0.72);
+  font-size: 0.92rem;
+  font-weight: 500;
 }
 
 .facts-grid {
@@ -382,8 +481,22 @@ a {
   color: var(--text-strong);
 }
 
-.contact-section {
-  padding: 2px 0 0;
+.cta-panel {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.cta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: #0d1b33;
+  color: #ffffff;
 }
 
 .contact-grid {
@@ -392,14 +505,28 @@ a {
 
 .contact-card {
   display: block;
-  min-height: 140px;
+  min-height: 170px;
   padding: 20px;
+}
+
+.contact-card .card-label {
+  margin: 16px 0 0;
 }
 
 .contact-card strong {
   display: block;
   margin-top: 14px;
   font-size: 1rem;
+}
+
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px;
+  color: var(--accent-2);
+  font-size: 0.92rem;
+  font-weight: 700;
 }
 
 .footer {
@@ -417,7 +544,8 @@ a {
 @media (max-width: 1120px) {
   .hero,
   .profile-grid,
-  .service-grid,
+  .highlight-grid,
+  .service-spotlight,
   .facts-grid,
   .contact-grid {
     grid-template-columns: 1fr 1fr;
@@ -433,19 +561,11 @@ a {
   .topbar,
   .hero,
   .panel,
-  .footer {
+  .cta-panel,
+  .footer,
+  .service-detail,
+  .service-tab {
     border-radius: 22px;
-  }
-
-  .topbar,
-  .hero,
-  .profile-grid,
-  .feature-grid,
-  .service-grid,
-  .facts-grid,
-  .contact-grid,
-  .footer {
-    grid-template-columns: 1fr;
   }
 
   .topbar,
@@ -454,12 +574,23 @@ a {
     align-items: flex-start;
   }
 
+  .hero,
+  .profile-grid,
+  .highlight-grid,
+  .service-spotlight,
+  .facts-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
   .nav-links {
     gap: 12px;
   }
 
   .hero,
-  .panel {
+  .panel,
+  .cta-panel,
+  .service-detail {
     padding: 22px;
   }
 

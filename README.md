@@ -1,6 +1,6 @@
 # SkyHub Company Profile
 
-Standalone company-profile site for SkyHub.
+Standalone Next.js App Router site for the SkyHub company profile.
 
 Scope:
 - company profile only
@@ -8,7 +8,9 @@ Scope:
 - no dashboard
 - no shipment or ops modules
 
-Files:
-- `index.html`
-- `styles.css`
-- `vercel.json`
+Run locally:
+
+```bash
+npm install
+npm run dev
+```
